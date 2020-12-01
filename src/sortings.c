@@ -111,7 +111,7 @@ void count_sort(strings_array_t strings_array, array_size_t array_size, comparat
     }
 
     for (i = array_size - 1; (int) i >= 0; i--) {
-        output_array[(size_t) count[strings_array[i][digit]] - 1] = strings_array[i];
+        output_array[count[(size_t) strings_array[i][digit]] - 1] = strings_array[i];
         count[(size_t) strings_array[i][digit]]--;
     }
 
