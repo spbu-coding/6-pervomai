@@ -27,8 +27,8 @@ int review_entering_args(int argc, char* argv[], struct input_argc_t* input_argc
     }
 
 
-    if (strtoul(argv[1],NULL,10) == 0 || strtoul(argv[1],NULL,10) < 0) {
-        error("The first argument must not be zero and negative");
+    if (strtoul(argv[1],NULL,10) == 0) {
+        error("The first argument must not be zero");
         return -1;
     }
     else {input_argc->num_strings = strtoul(argv[1], NULL, 10);
@@ -74,6 +74,7 @@ int review_entering_args(int argc, char* argv[], struct input_argc_t* input_argc
         error("Your comparator is not supported");
         return -1;
     }
+    return 0;
 }
 
 
