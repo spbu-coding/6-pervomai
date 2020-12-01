@@ -74,10 +74,10 @@ void quick (strings_array_t strings_array, array_size_t array_size, comparator_f
     size_t left = 0;
     size_t right = array_size - 1;
     do {
-        while (comparator(strings_array[left],strings_array[pivot]) > 0){
+        while (comparator(strings_array[left],strings_array[pivot]) < 0){
             left++;
         }
-        while (comparator(strings_array[pivot], strings_array[right]) > 0){
+        while (comparator(strings_array[pivot], strings_array[right]) < 0){
             right--;
         }
         if (left <= right){
@@ -117,8 +117,9 @@ void count_sort(strings_array_t strings_array, array_size_t array_size, comparat
 
     for (i = 0; i < array_size; i++){
         strings_array[i] = output_array[i];
-        if (comparator(strings_array[i],strings_array[array_size - i - 1]) > 0){
-            strings_array[i] = output_array[array_size - i - 1];
+        if (comparator(output_array[i],output_array[array_size - i - 1]) > 0){
+            swap(&output_array[i],&output_array[array_size - i - 1]);
+            strings_array[i] = output_array[i];
         }
     }
 }
