@@ -1,9 +1,5 @@
-
 #include "sortings.h"
-#include <stdio.h>
 #include <string.h>
-#include <stdlib.h>
-
 
 #define ASCII_NUM 128
 
@@ -107,14 +103,14 @@ void count_sort(strings_array_t strings_array, array_size_t array_size, comparat
     size_t count[ASCII_NUM] = {0};
 
     for (i = 0; i < array_size; i++){
-        count[(size_t) strings_array[i][digit]];
+        count[(size_t) strings_array[i][digit]]++;
     }
 
     for (i = 1; i < ASCII_NUM; i++){
         count[i] += count[i - 1];
     }
 
-    for (i = array_size - 1; i >= 0; i--){
+    for (i = array_size - 1; (int) i >= 0; i--){
         output_array[count[(size_t) strings_array[i][digit]] - 1] = strings_array[i];
         count[(size_t) strings_array[i][digit]]--;
     }
@@ -134,7 +130,7 @@ void radix(strings_array_t strings_array, array_size_t array_size, comparator_fu
         }
     }
 
-    for (size_t digit = max_string_length - 1; digit >= 0; digit--) {
+    for (size_t digit = max_string_length - 1; (int) digit >= 0; digit--) {
         count_sort(strings_array, array_size, comparator, digit);
     }
 }
