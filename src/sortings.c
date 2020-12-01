@@ -103,7 +103,7 @@ void count_sort(strings_array_t strings_array, array_size_t array_size, comparat
     size_t count[ASCII_NUM] = {0};
 
     for (i = 0; i < array_size; i++) {
-        count[strings_array[i][digit]]++;
+        count[(size_t) strings_array[i][digit]]++;
     }
 
     for (i = 1; i < ASCII_NUM; i++) {
@@ -111,8 +111,8 @@ void count_sort(strings_array_t strings_array, array_size_t array_size, comparat
     }
 
     for (i = array_size - 1; (int) i >= 0; i--) {
-        output_array[count[strings_array[i][digit]] - 1] = strings_array[i];
-        count[strings_array[i][digit]]--;
+        output_array[(size_t) count[strings_array[i][digit]] - 1] = strings_array[i];
+        count[(size_t) strings_array[i][digit]]--;
     }
 
     for (i = 0; i < array_size; i++) {
