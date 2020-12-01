@@ -97,29 +97,31 @@ void quick (strings_array_t strings_array, array_size_t array_size, comparator_f
 }
 
 
-void count_sort(strings_array_t strings_array, array_size_t array_size, comparator_func_t comparator, size_t digit){
-    char* output_array[array_size];
+void count_sort(strings_array_t strings_array, array_size_t array_size, comparator_func_t comparator, size_t digit) {
+    char *output_array[array_size];
     size_t i;
     size_t count[ASCII_NUM] = {0};
 
-    for (i = 0; i < array_size; i++){
-        count[(size_t) strings_array[i][digit]]++;
+    for (i = 0; i < array_size; i++) {
+        count[strings_array[i][digit]]++;
     }
 
-    for (i = 1; i < ASCII_NUM; i++){
+    for (i = 1; i < ASCII_NUM; i++) {
         count[i] += count[i - 1];
     }
 
-    for (i = array_size - 1; (int) i >= 0; i--){
-        output_array[count[(size_t) strings_array[i][digit]] - 1] = strings_array[i];
-        count[(size_t) strings_array[i][digit]]--;
+    for (i = array_size - 1; (int) i >= 0; i--) {
+        output_array[count[strings_array[i][digit]] - 1] = strings_array[i];
+        count[strings_array[i][digit]]--;
     }
 
-    for (i = 0; i < array_size; i++){
+    for (i = 0; i < array_size; i++) {
         strings_array[i] = output_array[i];
-        if (comparator(output_array[i],output_array[array_size - i - 1]) > 0){
-            swap(&output_array[i],&output_array[array_size - i - 1]);
-            strings_array[i] = output_array[i];
+    }
+
+    for(i = 0; i < array_size / 2; i++ ) {
+        if (comparator(strings_array[i], strings_array[array_size - i - 1]) > 0) {
+            swap(&strings_array[i],&strings_array[array_size - i - 1]);
         }
     }
 }
