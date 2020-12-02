@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <errno.h>
 #include "sortings.h"
 
 #define error(...) (fprintf(stderr, __VA_ARGS__))
@@ -26,9 +27,11 @@ int review_entering_args(int argc, char* argv[], struct input_argc_t* input_argc
         return -1;
     }
 
-
-    if (strtoul(argv[1],NULL,10) == 0) {
-        error("The first argument must not be zero");
+    errno = 0;
+    char* end_pointer = NULL;
+    const char* n_pointer = argv[1];
+    if (strtol(argv[1],&end_pointer,10) < 0 || n_pointer == end_pointer) {
+        error("Incorrect first argument.");
         return -1;
     }
     else {input_argc->num_strings = strtoul(argv[1], NULL, 10);
@@ -131,17 +134,24 @@ int main(int argc, char* argv[]) {
         return -1;
     }
 
-    if (reading_input_file(input_file, &input_argc, strings_array) < 0){
-        fclose(input_file);
-        return -1;
+    if (reading_input_file(input_file, &input_argc, strings_array) < 0) {
+            fclose(input_file);
+            for (size_t i = 0; i < input_argc.num_strings; i++) //free strings array
+                free(strings_array[i]);
+            free(strings_array);
+            strings_array = NULL;
+            error("Fail in reading file\n");
+            return -1;
     }
 
-    input_argc.sort_alg(strings_array, input_argc.num_strings, input_argc.comparator);
+    if (input_argc.num_strings > 0) {
+        input_argc.sort_alg(strings_array, input_argc.num_strings, input_argc.comparator);
+    }
 
     FILE* output_file = fopen(argv[3], "w");
     if (output_file == NULL){
         fclose(input_file);
-        for(size_t i = 0; i <input_argc.num_strings; i++) //free strings array
+        for(size_t i = 0; i < input_argc.num_strings; i++) //free strings array
             free(strings_array[i]);
         free(strings_array);
         strings_array = NULL;
@@ -151,7 +161,12 @@ int main(int argc, char* argv[]) {
 
 //putting strings in file
 
-for (size_t i = 0; i < input_argc.num_strings; i++){
+if (input_argc.num_strings == 0){
+    if (fputs("\n", output_file) == EOF){
+        error("Fail in writing strings in output file");
+        return -1;
+    }
+}else {for (size_t i = 0; i < input_argc.num_strings; i++){
     if (fputs(strings_array[i], output_file) != EOF){
         if(strcspn(strings_array[i], "\n") == strlen(strings_array[i])) {
             if (fputs("\n", output_file) == EOF) {
@@ -164,6 +179,7 @@ for (size_t i = 0; i < input_argc.num_strings; i++){
         error("Fail in writing strings in output file");
         return -1;
     }
+ }
 }
 
     fclose(input_file);
