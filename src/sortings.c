@@ -23,7 +23,7 @@ void insertion(strings_array_t strings_array, array_size_t array_size, comparato
     for (size_t i = 1; i < array_size; i++) {
         char* buf = strings_array[i];
         size_t j = i;
-        while (j > 0 && comparator(strings_array[j - 1],strings_array[i]) > 0) {
+        while (j > 0 && comparator(strings_array[j - 1], buf) > 0) {
             strings_array[j] = strings_array[j - 1];
             j--;
         }
@@ -34,9 +34,14 @@ void insertion(strings_array_t strings_array, array_size_t array_size, comparato
 void sub2_merge_sort(size_t left, size_t mid,size_t right,strings_array_t strings_array, comparator_func_t comparator){
    char* temp[right - left + 1];
    size_t i = left, j = mid + 1, k = 0;
-   while (i <= mid && j <= left){
-       if (comparator(strings_array[i], strings_array[j]) > 0){
+   while (i <= mid && j <= right){
+       if (comparator(strings_array[i], strings_array[j]) < 0){
            temp[k] = strings_array[i];
+           k++;
+           i++;
+       }
+       else {
+           temp[k] = strings_array[j];
            k++;
            j++;
        }
@@ -111,7 +116,7 @@ void count_sort(strings_array_t strings_array, array_size_t array_size, comparat
     }
 
     for (i = array_size - 1; (int) i >= 0; i--) {
-        output_array[(size_t) count[strings_array[i][digit]] - 1] = strings_array[i];
+        output_array[count[(size_t) strings_array[i][digit]] - 1] = strings_array[i];
         count[(size_t) strings_array[i][digit]]--;
     }
 
@@ -137,6 +142,3 @@ void radix(strings_array_t strings_array, array_size_t array_size, comparator_fu
         count_sort(strings_array, array_size, comparator, digit);
     }
 }
-
-
-
